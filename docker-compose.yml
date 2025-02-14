@@ -1,0 +1,119 @@
+services:
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - '${PORT}:80'
+    volumes:
+      - ./.docker/nginx/dev:/etc/nginx/conf.d:z
+      - ./static:/usr/app/
+    networks:
+      - app_network
+
+  store:
+    build:
+      context: .
+      dockerfile: ./apps/store/Dockerfile
+      target: development
+    command: npm run start:dev store
+    env_file:
+      - ./apps/store/.env
+    depends_on:
+#      - mongodb
+      - redis
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+    networks:
+      - app_network
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+#      - mongodb
+      - redis
+      - store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3001:3001'
+    networks:
+      - app_network
+
+  product:
+    build:
+      context: .
+      dockerfile: ./apps/product/Dockerfile
+      target: development
+    command: npm run start:dev product
+    env_file:
+      - ./apps/product/.env
+    depends_on:
+#      - mongodb
+      - redis
+      - store
+      - auth
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3002:3002'
+    networks:
+      - app_network
+
+  order:
+    build:
+      context: .
+      dockerfile: ./apps/order/Dockerfile
+      target: development
+    command: npm run start:dev order
+    env_file:
+      - ./apps/order/.env
+    depends_on:
+#      - mongodb
+      - redis
+      - store
+      - auth
+      - product
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3003:3003'
+    networks:
+      - app_network
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - app_network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - app_network
+
+volumes:
+  mongo_data:
+
+networks:
+  app_network:
