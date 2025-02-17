@@ -24,7 +24,7 @@ async function bootstrap() {
     .setTitle('Order API service of store in microservices')
     .setDescription('The API description')
     .setVersion('1.0')
-    .setBasePath('/api/order')
+    .addServer('/api/order')
     .addBearerAuth()
     .build();
 

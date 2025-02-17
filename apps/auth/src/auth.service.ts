@@ -17,6 +17,7 @@ import { UserEntity } from './user/entities/user.entity';
 import { UserService } from './user/user.service';
 import { UserRoleEnum } from './user/enums/user-role.enum';
 import { ValidationException } from '@app/common/utils/exceptions/validation.exception';
+import { UserDto } from './user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private jwtService: JwtService,
     private config: ConfigService,
     private userService: UserService,
+    private configService: ConfigService,
   ) {}
 
   async validateUser(email, password): Promise<UserEntity> {
@@ -111,5 +113,12 @@ export class AuthService {
       isActive: user.isActive,
       role: user.role,
     };
+  }
+
+  async findOneById(id: string): Promise<UserDto> {
+    const user = await this.userRepository.findById(id);
+    const staticUrlPrefix =
+      this.configService.get<string>('STATIC_URL_PREFIX') || '';
+    return UserDto.fromEntity(user, staticUrlPrefix);
   }
 }

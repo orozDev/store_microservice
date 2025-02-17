@@ -23,6 +23,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
         REFRESH_SECRET_KEY: Joi.string().required(),
         ACCESS_SECRET_EXPIRES: Joi.string().required(),
         REFRESH_SECRET_KEY_EXPIRES: Joi.string().required(),
+        STATIC_URL_PREFIX: Joi.string().required(),
         MONGODB_URI: Joi.string().required(),
       }),
       envFilePath: './apps/auth/.env',

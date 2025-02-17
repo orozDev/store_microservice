@@ -23,11 +23,16 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { UserWithTokensDto } from './dto/user-with-tokens.dto';
 import { FormDataRequest } from 'nestjs-form-data';
 import { UserEntity } from './user/entities/user.entity';
+import { MessagePattern } from '@nestjs/microservices';
+import { UserService } from './user/user.service';
 
 @ApiTags('Auth')
-@Controller('/auth')
+@Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @ApiResponse({ status: HttpStatus.OK, type: UserWithTokensDto })
   @HttpCode(HttpStatus.OK)
@@ -92,5 +97,15 @@ export class AuthController {
     @Body() dto: ChangePasswordDto,
   ) {
     return await this.authService.changePassword(user, dto);
+  }
+
+  @MessagePattern('is_active_user')
+  async isActiveUser(id: string) {
+    return await this.authService.checkUserActivityById(id);
+  }
+
+  @MessagePattern('find_one_by_id')
+  async findOneById(id: string) {
+    return await this.authService.findOneById(id);
   }
 }
