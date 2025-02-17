@@ -1,22 +1,13 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { PipeTransform, Injectable } from '@nestjs/common';
 
 @Injectable()
-export class ContextInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    if (request.body) {
-      request.body.__context = {
-        user: request.user || null,
-        params: request.params,
-      };
+export class StripContextPipe implements PipeTransform {
+  transform(value: any) {
+    if (value.__context) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { __context, ...rest } = value;
+      return rest;
     }
-
-    return next.handle();
+    return value;
   }
 }

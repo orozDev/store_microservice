@@ -23,6 +23,7 @@ export class User {
 
   @Prop({
     enum: UserRoleEnum,
+    type: String,
     default: UserRoleEnum.CLIENT,
   })
   role: UserRoleEnum;

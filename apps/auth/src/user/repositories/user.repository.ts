@@ -10,11 +10,11 @@ import {
   RootFilterQuery,
 } from 'mongoose';
 import UserMapper from '../mappers/user.mapper';
-import RepositoryException from '../../common/exceptions/repository.exception';
-import MongoErrorCode from '../../common/enums/mongo-error-code.enum';
-import LockedException from '../../common/exceptions/locked.exception';
 import * as bcryptjs from 'bcryptjs';
-import UsesQueryDto from '../dto/user-query.dto';
+import UserQueryDto from '../dto/user-query.dto';
+import RepositoryException from '@app/common/utils/exceptions/repository.exception';
+import MongoErrorCode from '@app/common/database/enums/mongo-error-code.enum';
+import LockedException from '@app/common/utils/exceptions/locked.exception';
 
 @Injectable()
 export default class UserRepository {
@@ -26,7 +26,7 @@ export default class UserRepository {
   }
 
   async find(
-    usesQueryDto: UsesQueryDto,
+    usesQueryDto: UserQueryDto,
   ): Promise<{ count: number; users: UserEntity[] }> {
     const { page = 1, pageSize = 12, search, ...rest } = usesQueryDto;
 

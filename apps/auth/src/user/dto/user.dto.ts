@@ -1,7 +1,7 @@
 import { UserEntity } from '../entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRoleEnum } from '../enums/user-role.enum';
-import BaseEntityDto from '../../common/dto/base-entity.dto';
+import BaseEntityDto from '@app/common/utils/dto/base-entity.dto';
 
 export class UserDto extends BaseEntityDto {
   @ApiProperty({ example: '/static/avatar.png' })

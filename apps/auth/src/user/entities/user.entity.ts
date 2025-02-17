@@ -1,7 +1,7 @@
-import { BaseEntity } from '../../common/entities/base.entity';
 import { User } from '../schemas/user.schema';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import * as bcryptjs from 'bcryptjs';
+import { BaseEntity } from '@app/common/utils/entities/base.entity';
 
 export class UserEntity extends BaseEntity<UserEntity> implements User {
   avatar: string;

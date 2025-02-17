@@ -104,7 +104,6 @@ services:
 
   mongodb:
     image: mongo
-    container_name: mongodb
     volumes:
       - mongo_data:/data/db
     ports:

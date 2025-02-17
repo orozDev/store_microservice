@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IsUniqueConstraint } from './validators/is-unque.validator';
-import { IsExistedConstraint } from './validators/is-exists.validator';
-import { IsUniqueUpdatingConstraint } from './validators/is-unque-updating.validator';
+import { IsUniqueUpdatingConstraint } from '@app/common/database/validators/is-unque-updating.validator';
+import { IsUniqueConstraint } from '@app/common/database/validators/is-unque.validator';
+import { IsExistedConstraint } from '@app/common/database/validators/is-exists.validator';
 
 @Module({
   imports: [

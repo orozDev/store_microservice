@@ -1,10 +1,10 @@
-import { PaginationQueryDto } from '../../common/dto/pagination.dto';
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRoleEnum } from '../enums/user-role.enum';
 import { Transform } from 'class-transformer';
+import { PaginationQueryDto } from '@app/common/utils/dto/pagnation.dto';
 
-export default class UsesQueryDto extends PaginationQueryDto {
+export default class UserQueryDto extends PaginationQueryDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
